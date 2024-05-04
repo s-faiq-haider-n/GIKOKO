@@ -1,0 +1,111 @@
+.logo{
+    width: 60px; /* Set the desired width */
+    height: 60px; /* Set the same height to make it a perfect circle */
+    object-fit: cover; /* Ensure the image covers the entire container */
+    border-radius: 50%; /* Make the image round */
+  }
+
+.list-group-item chat-list-item:hover {
+    cursor: pointer;
+}
+.rounded-circle{
+    width: 40px; /* Set the desired width */
+    height: 40px; /* Set the same height to make it a perfect circle */
+    object-fit: cover; /* Ensure the image covers the entire container */
+    border-radius: 50%; /* Make the image round */
+  }
+
+.navbar-nav {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.nav-link {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+}
+
+.nav-link.active {
+    color: purple;
+}
+
+.nav-link:hover {
+    text-decoration: underline;
+    color: blue;
+}
+
+.chat-window {
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #f9f9f9;
+    height: 300px;
+    overflow-y: auto;
+}
+
+.chat-header {
+    border-bottom: 1px solid #ccc;
+    padding: 5px;
+}
+
+.chat-content {
+    padding: 10px;
+}
+
+.chat-input {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.footer {
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin-top: 11%;
+}
+
+.footer p {
+    margin: 0;
+}
+
+.chat-list-item {
+    display: flex;
+    align-items: center;
+}
+
+.chat-list-item .dp {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.message {
+    display: block;
+    /* Each message will be on a new line */
+    padding: 5px;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    overflow: auto;
+    /* Add space between messages */
+}
+
+.message-left {
+    text-align: left;
+    background-color: #f0f0f0;
+
+    /* Light green background for left messages */
+}
+
+.message-right {
+    text-align: right;
+    background-color: #d8f3dc;
+    /* Light grey background for right messages */
+}
+
+#chat-input-container {
+    padding: 10px;
+    display: none;
+}

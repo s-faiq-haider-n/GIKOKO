@@ -1,0 +1,47 @@
+--To select each entry and column from the Posts table
+SELECT * FROM posts;
+
+CREATE TABLE messages
+(
+	--Auto-incremental SERIAL Primary Key
+	message_id SERIAL PRIMARY KEY,
+	sender_id INT, --foreign key
+	receiver_id INT, --foreign key
+	msg_content VARCHAR(250),
+	msg_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	--Foreign key Constraints
+	CONSTRAINT fk_sender
+        FOREIGN KEY (sender_id)
+        REFERENCES users(user_id)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL,
+    CONSTRAINT fk_receiver
+        FOREIGN KEY (receiver_id)
+        REFERENCES users(user_id)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+)
+--Function and Trigger for assuring, the messages where the sender and receiver both (users) are deleted,
+--(their account deleted) leaving NULL in both the sender and receiver get deleted automatically on the next insertion
+--Function	
+CREATE OR REPLACE FUNCTION delete_messages()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Delete messages where both sender_id and receiver_id are NULL
+    IF NEW.sender_id IS NULL AND NEW.receiver_id IS NULL THEN
+        DELETE FROM messages
+        WHERE sender_id IS NULL AND receiver_id IS NULL;
+    END IF;
+    
+    RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+--TRIGGER
+CREATE TRIGGER check_default_messages
+AFTER INSERT ON messages
+FOR EACH ROW
+EXECUTE FUNCTION delete_messages();
+
+--To select each entry and column from the messages table
+SELECT * FROM messages;

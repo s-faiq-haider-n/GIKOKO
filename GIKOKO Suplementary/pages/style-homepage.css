@@ -1,0 +1,48 @@
+.header {
+    background-color: #f8f9fa;
+    padding: 20px 0;
+}
+
+.logo img {
+    max-height: 40px;
+}
+
+.navbar {
+    justify-content: flex-end;
+}
+
+.profile-section {
+    margin-top: 50px;
+}
+
+.footer {
+    background-color: #ffffff;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    margin-top: 5%;
+}
+
+.navbar-nav {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.nav-link {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    text-decoration: underline;
+    color: blue;
+}
+
+.nav-link.active {
+    color: purple;
+}
+
+.logo {
+    height: 40px;
+}

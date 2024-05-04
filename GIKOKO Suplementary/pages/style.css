@@ -1,0 +1,75 @@
+ body {
+     background-color: #f8f9fa;
+     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+ }
+
+ .container {
+     max-width: 500px;
+     border-radius: 10px;
+     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+     background-color: #fff;
+     padding: 40px;
+     margin-top: 50px;
+ }
+
+ .logo {
+     width: 100px;
+     height: auto;
+     margin-bottom: 20px;
+ }
+
+ h2 {
+     color: #333;
+     margin-bottom: 30px;
+ }
+
+ .form-control {
+     border-radius: 20px;
+     border-color: #ced4da;
+ }
+
+ .btn-primary {
+     border-radius: 20px;
+     background-color: #007bff;
+     border-color: #007bff;
+     transition: background-color 0.3s ease;
+ }
+
+ .btn-primary:hover {
+     background-color: #0056b3;
+     border-color: #0056b3;
+ }
+
+ .text-muted {
+     font-size: 12px;
+ }
+
+ .create-account-link,
+ .sign-in-link {
+     color: #007bff;
+ }
+
+ .create-account-link:hover,
+ .sign-in-link:hover {
+     text-decoration: underline;
+ }
+
+ /* Additional CSS for visual appeal */
+ .mb-4 {
+     margin-bottom: 1.5rem !important;
+ }
+
+ .mt-4 {
+     margin-top: 1.5rem !important;
+ }
+
+ .lead {
+     font-size: 1.2rem;
+     color: #6c757d;
+ }
+
+ .brand {
+     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+     color: #000000;
+     font-size: 10px;
+ }

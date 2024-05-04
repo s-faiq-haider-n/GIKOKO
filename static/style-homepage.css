@@ -1,0 +1,88 @@
+.header {
+    background-color: #f8f9fa;
+    padding: 20px 0;
+}
+
+.logo{
+  width: 60px; /* Set the desired width */
+  height: 60px; /* Set the same height to make it a perfect circle */
+  object-fit: cover; /* Ensure the image covers the entire container */
+  border-radius: 50%; /* Make the image round */
+}
+
+.navbar {
+    justify-content: flex-end;
+}
+.rounded-circle {
+  width: 60px; /* Set the desired width */
+  height: 60px; /* Set the same height to make it a perfect circle */
+  object-fit: cover; /* Ensure the image covers the entire container */
+  border-radius: 50%; /* Make the image round */
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
+.profile-section {
+    margin-top: 50px;
+}
+
+.footer {
+    background-color: #ffffff;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    margin-top: 5%;
+}
+
+.navbar-nav {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.nav-link {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    text-decoration: underline;
+    color: blue;
+}
+
+.nav-link.active {
+    color: purple;
+}
+
+.logo {
+  width: 60px; /* Set the desired width */
+  height: 60px; /* Set the same height to make it a perfect circle */
+  object-fit: cover; /* Ensure the image covers the entire container */
+  border-radius: 50%; /* Make the image round */
+}
+
+@keyframes typewriter {
+    from {
+      width: 0;
+    }
+    to {
+      width: 47%;
+    }
+  }
+  
+  @keyframes colorChange {
+    0% {
+      color: #3a9eff;
+    }
+    50% {
+      color: #9c9797; 
+    }
+    100% {
+      color: #3a9eff; 
+    }
+  }
+  
+  #animatedtext {
+    overflow: hidden;
+    white-space: nowrap; /* Prevent text from wrapping */
+    border-right: 2px solid #3a9eff; padding-right: 2px; animation: typewriter 5s steps(30) infinite, colorChange 2s infinite; /* Animation properties */
+  }
+  

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIKOKO - Create Account</title>
+    <link rel="icon" type="image/png" href="logo.jpg">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
+
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="text-center mb-4">
+                    <img src="{{ url_for('static', filename='logo.jpg') }}" alt="Logo" width="80" height="80">
+                    <p class="brand">Ghulam Ishaq Khan Online Kinship Oasis</p>
+                </div>
+                <form id="createAccountForm" action="/submit_account" method="POST">
+                    <h3>Create Account</h3>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="username" name='username' placeholder="Username"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" id="emailCreate" name='email' placeholder="Email"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" id="passwordCreate" name='password'
+                            placeholder="Password" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password"
+                            required>
+                        <small id="passwordHelpBlock" class="form-text text-muted">
+                            Your password must be 8-20 characters long, contain letters and numbers, and must not
+                            contain spaces, special characters, or emoji.
+                        </small>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+                </form>
+                <hr>
+                <p class="text-center">Already have an account? <a href="/login" id="signInLink">Sign In</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript dependencies -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script>
+        // JavaScript code can be added here
+        $(document).ready(function () {
+            $("#createAccountForm").submit(function (e) {
+                e.preventDefault();
+                var username = $("#username").val();
+                var email = $("#emailCreate").val();
+                var password = $("#passwordCreate").val();
+                var confirmPassword = $("#confirmPassword").val();
+
+                // Check if passwords match
+                if (password !== confirmPassword) {
+                    alert("Passwords do not match");
+                    return;
+                }
+
+                // Here you can add code to handle account creation, such as sending data to a server or storing it locally
+                // For demonstration purposes, let's simply print a success message
+                alert("Account created successfully");
+                // You can also redirect the user to the sign-in page after account creation
+                $("#createAccountForm").hide();
+                $("#signInForm").show();
+            });
+            // Send AJAX request to Flask route for account creation
+            $.ajax({
+                type: "POST",  // HTTP method
+                url: "/login",  // Flask route
+                data: {
+                    username: username,
+                    email: email,
+                    password: password
+                },
+                success: function (response) {
+                    alert("Account created successfully");  // Display success message
+                    // Optionally redirect to another page after successful account creation
+                    window.location.href = "/login";  // Redirect to login page
+                },
+                error: function (error) {
+                    console.error("Error creating account:", error);
+                    alert("Failed to create account. Please try again.");  // Display error message
+                }
+            });
+
+            // Additional code here if needed (e.g., hiding/showing elements)
+            $("#createAccountForm").hide(); // Hides the create account form
+            $("#signInForm").show(); // Shows the sign-in form
+        });
+
+    </script>
+</body>
+
+</html>

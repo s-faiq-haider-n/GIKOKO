@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIKOKO - Sign In</title>
+    <link rel="icon" type="image/png" href="logo.jpg">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="text-center mb-4">
+                    <img src="{{ url_for('static', filename='logo.jpg') }}" alt="Logo" width="80" height="80">
+                    <p class="brand">Ghulam Ishaq Khan Online Kinship Oasis</p>
+                </div>
+                <form id="signInForm" action="/authenticate" method="POST">
+                    <h3>Sign In</h3>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="username" name='username' placeholder="Username"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" id="password" name='password' placeholder="Password"
+                            required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                </form>
+                <hr>
+                <p class="text-center">Don't have an account? <a href="/create" id="createAccountLink">Create
+                        One</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript dependencies -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Clear username and password input fields
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        });
+    </script>
+
+</body>
+
+</html>

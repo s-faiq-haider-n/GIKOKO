@@ -1,0 +1,85 @@
+.header {
+    background-color: #f8f9fa;
+    padding: 20px 0;
+}
+
+
+.navbar-nav {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.nav-link {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    text-decoration: underline;
+    color: blue;
+}
+
+.nav-link.active {
+    color: purple;
+}
+
+.logo {
+    height: 40px;
+}
+
+.section-btn {
+    font-size: 16px;
+    padding: 15px;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    margin: 10px;
+}
+
+.section-btn:hover {
+    background-color: #e9ecef;
+    color: #0d6efd;
+}
+
+.modal-content {
+    border: 2px solid #0d6efd;
+}
+
+.modal-title {
+    color: #0d6efd;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+.btn-outline-primary {
+    border-color: #0d6efd;
+    color: #0d6efd;
+}
+
+.btn-outline-primary:hover {
+    background-color: #0d6efd;
+    color: white;
+}
+
+.nav-link {
+    color: #000000;
+}
+
+.nav-link.active {
+    color: purple;
+}
+
+.footer {
+    background-color: #343a40;
+    color: white;
+    margin-top: 15%;
+}

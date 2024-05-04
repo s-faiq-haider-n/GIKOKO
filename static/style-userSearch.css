@@ -1,0 +1,94 @@
+.header {
+    background-color: #f8f9fa;
+    padding: 10px 0;
+    /* Reduced padding for a consistent height */
+}
+
+.navbar {
+    justify-content: flex-end;
+}
+
+.navbar-nav {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.nav-link {
+    color: rgb(0, 0, 0);
+    /* Default link color */
+    text-decoration: none;
+    /* No underline by default */
+}
+
+.nav-link:hover {
+    text-decoration: underline;
+    /* Underline on hover */
+    color: blue;
+    /* Change color on hover */
+}
+
+.nav-link.active {
+    color: purple;
+    /* Active link color */
+}
+
+.logo{
+    width: 60px; /* Set the desired width */
+    height: 60px; /* Set the same height to make it a perfect circle */
+    object-fit: cover; /* Ensure the image covers the entire container */
+    border-radius: 50%; /* Make the image round */
+  }
+
+.search-section {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.input-group {
+    max-width: 500px;
+    margin: 0 auto;
+    /* Center align the search bar */
+}
+
+.results-section {
+    padding: 20px;
+}
+
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.footer {
+    background-color: #333;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+/* Custom CSS for the image within the card */
+.card.mb-3 .col-md-3 img {
+    width: 70%; /* Image width to fill the entire column */
+    height: auto; /* Auto height to maintain aspect ratio */
+    max-width: 100%; /* Ensure image doesn't exceed column width */
+    object-fit: cover; /* Maintain aspect ratio and cover the entire space */
+    aspect-ratio: 1; /* Force a 1:1 aspect ratio (square shape) */
+}
+
+/* CSS for Send Message button */
+#sendMessageBtn {
+    background-color: #007bff; /* Blue background */
+    color: #ffffff; /* White text color */
+    border-radius: 5px; /* Rounded corners */
+    padding: 8px 16px; /* Padding inside the button */
+    border: none; /* Remove default button border */
+    cursor: pointer; /* Show pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition for background color change */
+}
+
+/* Hover effect: Darken the background color */
+#sendMessageBtn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}

@@ -1,0 +1,26 @@
+--To select each entry and column from the Users table
+SELECT * FROM users;
+
+--Creating a user defined ENUM-based type for Storing Categories
+CREATE TYPE category AS ENUM ('General', 'Academic', 'Lost_n_Found', 'Transport','Society_Ad','GIKI_Olx');
+
+CREATE TABLE posts
+(
+	--Auto-incremental SERIAL Primary Key
+	post_id SERIAL PRIMARY KEY,
+	--Foreign key to reference a user from "users" table 
+	user_id INT NOT NULL,
+	post_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	--USER-defined "category" type
+	category category NOT NULL,
+	title VARCHAR(100) NOT NULL,
+	post_content VARCHAR(1000),
+	CONSTRAINT fk_userid
+		FOREIGN KEY(user_id)
+		REFERENCES users(user_id)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+);
+
+--To select each entry and column from the Posts table
+SELECT * FROM posts;

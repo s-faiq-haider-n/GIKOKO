@@ -1,0 +1,126 @@
+--Creating a user defined ENUM-based type for Storing Genders
+CREATE TYPE gender AS ENUM ('Male', 'Female', 'Non-Binary', 'Other');
+
+--Main "users" Table containing 14 Attributes
+CREATE TABLE users 
+(
+	--Auto-incremental SERIAL Primary Key
+	user_id SERIAL PRIMARY KEY,
+	user_name VARCHAR(100) UNIQUE NOT NULL,
+	--Later-on Trigger assuring, no more than 3 accounts for the same email 
+	email VARCHAR(50) NOT NULL,
+	--Regex for validating emails
+	CONSTRAINT valid_email CHECK (email ~ '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'),
+	phone_no VARCHAR(15),
+	first_name VARCHAR(100),
+	last_name VARCHAR(100),
+	--USER-defined "gender" type
+	gender gender,
+	bio TEXT DEFAULT 'No biodata added by the user.',
+	--Path to the display picture for retrieval.
+	dp_path VARCHAR(255),
+	address VARCHAR(250),
+	date_of_birth DATE,
+	date_joined TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	--argon2 hashing algorithm used for hashing purposes
+	h_password BYTEA NOT NULL,
+	--32 Character hexafied salt, generated with "secrets" module of Python
+	h_passSalt CHAR(32) NOT NULL
+	--As Users can have multi emails, phone numbers, addresses,
+	--they will stored in another table for assuring 2NF (Already in 1NF).
+	--In this table, only primary email, phone number and address stored
+);
+--Function and Trigger for assuring, no more than 3 accounts for the same email
+--Function
+CREATE OR REPLACE FUNCTION enforce_max_accounts_per_email()
+RETURNS TRIGGER AS $$
+BEGIN 
+	--Checking the count for the same email
+	IF (SELECT COUNT(*) FROM users WHERE email=NEW.email) >= 3 THEN 
+		RAISE EXCEPTION 'Cannot exceed 3 accounts per email';
+	END IF;
+		--INSERTION/UPDATION Allowed if constraint satisfied
+	RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+--Trigger
+CREATE TRIGGER enforce_max_accounts_trigger
+BEFORE INSERT OR UPDATE OF email ON users
+FOR EACH ROW
+EXECUTE FUNCTION enforce_max_accounts_per_email();
+
+--To select each entry and column from the Users table
+SELECT * FROM users;
+
+--Creating a user defined ENUM-based type for Storing Categories
+CREATE TYPE category AS ENUM ('General', 'Academic', 'Lost_n_Found', 'Transport','Society_Ad','GIKI_Olx');
+
+CREATE TABLE posts
+(
+	--Auto-incremental SERIAL Primary Key
+	post_id SERIAL PRIMARY KEY,
+	--Foreign key to reference a user from "users" table 
+	user_id INT NOT NULL,
+	post_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	--USER-defined "category" type
+	category category NOT NULL,
+	title VARCHAR(100),
+	post_content VARCHAR(1000),
+	CONSTRAINT fk_userid
+		FOREIGN KEY(user_id)
+		REFERENCES users(user_id)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+);
+
+--To select each entry and column from the Posts table
+SELECT * FROM posts;
+
+CREATE TABLE messages
+(
+	--Auto-incremental SERIAL Primary Key
+	message_id SERIAL PRIMARY KEY,
+	sender_id INT, --foreign key
+	receiver_id INT, --foreign key
+	msg_content VARCHAR(250),
+	msg_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	--Foreign key Constraints
+	CONSTRAINT fk_sender
+        FOREIGN KEY (sender_id)
+        REFERENCES users(user_id)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL,
+    CONSTRAINT fk_receiver
+        FOREIGN KEY (receiver_id)
+        REFERENCES users(user_id)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+)
+--Function and Trigger for assuring, the messages where the sender and receiver both (users) are deleted,
+--(their account deleted) leaving NULL in both the sender and receiver get deleted automatically on the next insertion
+--Function	
+CREATE OR REPLACE FUNCTION delete_messages()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Delete messages where both sender_id and receiver_id are NULL
+    IF NEW.sender_id IS NULL AND NEW.receiver_id IS NULL THEN
+        DELETE FROM messages
+        WHERE sender_id IS NULL AND receiver_id IS NULL;
+    END IF;
+    
+    RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+--TRIGGER
+CREATE TRIGGER check_default_messages
+AFTER INSERT ON messages
+FOR EACH ROW
+EXECUTE FUNCTION delete_messages();
+
+--To select each entry and column from the messages table
+SELECT * FROM messages;
+
+SELECT * FROM users;
+SELECT * FROM posts;
+SELECT * FROM messages;

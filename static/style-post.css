@@ -1,0 +1,120 @@
+.header {
+    background-color: #f8f9fa;
+    padding: 20px 0;
+}
+
+
+.navbar-nav {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.nav-link {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    text-decoration: underline;
+    color: blue;
+}
+
+.nav-link.active {
+    color: purple;
+}
+
+.logo{
+    width: 60px; /* Set the desired width */
+    height: 60px; /* Set the same height to make it a perfect circle */
+    object-fit: cover; /* Ensure the image covers the entire container */
+    border-radius: 50%; /* Make the image round */
+  }
+
+.section-btn {
+    font-size: 16px;
+    padding: 15px;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    margin: 10px;
+}
+
+.section-btn:hover {
+    background-color: #e9ecef;
+    color: #0d6efd;
+}
+
+.modal-content {
+    border: 2px solid #0d6efd;
+}
+
+.modal-title {
+    color: #0d6efd;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+.btn-outline-primary {
+    border-color: #0d6efd;
+    color: #0d6efd;
+}
+
+.btn-outline-primary:hover {
+    background-color: #0d6efd;
+    color: white;
+}
+
+.nav-link {
+    color: #000000;
+}
+
+.nav-link.active {
+    color: purple;
+}
+
+.footer {
+    background-color: #343a40;
+    color: white;
+    margin-top: 15%;
+}
+
+#allPosts {
+    display: inline-block;
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+    text-align: center;
+    transition: color 0.3s ease, transform 0.3s ease, border 0.3s ease;
+    line-height: 2; /* Set line-height to 1 for vertical alignment */
+    vertical-align: middle; /* Align vertically in the middle */
+}
+
+/* Hover styles for the link */
+#allPosts:hover {
+    color: #0d6efd;
+    transform: scale(1.1); /* Enlarge on hover */
+    border: 1px solid #0d6efd; /* Add border on hover */
+    border-radius: 7px; 
+    padding: 0.5%;
+}
+
+/* Keyframes for color-changing animation */
+@keyframes colorChange {
+    0% { color: black; }
+    50% { color: #0d6efd; }
+    100% { color: black; }
+}
+
+/* Apply animation to the link */
+#allPosts {
+    animation: colorChange 1s infinite; /* Infinite color-changing animation */
+}

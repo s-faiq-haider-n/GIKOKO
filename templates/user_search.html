@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>User Search</title>
+    <link rel="icon" type="image/png" href="logo.jpg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style-homepage.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style-userSearch.css') }}">
+
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><img src="{{ url_for('static', filename='logo.jpg') }}" alt="GIKOKO Logo"
+                    class="logo">
+            </a>
+            <button class=" navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/post_page">Post</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dm">Message</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/userSearch">User Search</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Search Section -->
+    <section class="search-section mt-4">
+        <div class="container">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Enter user's name" aria-label="Search"
+                    aria-describedby="button-search">
+                <button class="btn btn-primary" type="button" id="button-search">Search</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Results -->
+    <section class="results-section mt-4">
+        <div class="container">
+            {% if users %}
+            {% for user in users %}
+            {% if user[0]==current_userID%}
+            {% else %}
+            <div class="card mb-3">
+                <div class="row g-0">
+                    <div class="col-md-3">
+                        {% if user[5] %}
+                        <img src="{{ url_for('static', filename=user[5]) }}" class="rounded-circle">
+                        {% else %}
+                        <!-- Placeholder image or default avatar if dp_path is NULL -->
+                        <img src="{{ url_for('static', filename='default.jpg') }}" class="rounded-circle">
+                        {% endif %}
+                    </div>
+                    <div class="col-md-9">
+                        <div class="card-body">
+                            <h5 class="card-title">{{user[1]}} {{user[2]}}</h5>
+                            <p class="card-text bio">{{user[3]}}
+                            </p>
+                            <p class="card-text joined"><small class="text-muted">{{user[4]}}</small></p>
+                            <a href="#" class="btn btn-primary message-btn" data-userid="{{ user[0] }}"
+                                data-bs-toggle="modal" data-bs-target="#messageModal">Message</a>
+                        </div>
+                        <!-- Modal for Message -->
+                        <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="messageModalLabel">Send Message</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Message Form -->
+                                        <form id="messageForm" action="/send_message" method="POST">
+                                            <input type="hidden" id="userIdField" name="user_id" value="">
+                                            <div class="mb-3">
+                                                <label for="messageText" class="form-label">Message:</label>
+                                                <textarea class="form-control" id="messageText" name="message" rows="3"
+                                                    maxlength="249"></textarea>
+                                            </div>
+                                            <button type="submit" class="btn2 btn-primary" id="sendMessageBtn">Send
+                                                Message</button>
+                                        </form>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% else %}
+            <p>No Users</p>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white text-center py-3">
+        <div class="container">
+            <p>&copy; 2024 GIKOKO. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        // JavaScript Code
+        // Wait for the document to load
+        document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('click', function (event) {
+                if (event.target.classList.contains('btn-primary')) {
+                    const messageModal = new bootstrap.Modal(document.getElementById('messageModal'), {
+                        keyboard: false
+                    });
+                    messageModal.show();
+
+                    const sendMessageBtn = document.getElementById('sendMessageBtn');
+                    sendMessageBtn.addEventListener('click', function () {
+                        const message = document.getElementById('messageText').value;
+                        console.log('Message:', message);
+                        messageModal.hide();
+                    });
+                }
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            let messageButtons = document.querySelectorAll('.message-btn');
+
+            messageButtons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    let userId = button.getAttribute('data-userid');
+                    document.getElementById('userIdField').value = userId; // Set user_id in a hidden field
+                });
+            });
+        });
+
+    </script>
+</body>
+
+</html>
