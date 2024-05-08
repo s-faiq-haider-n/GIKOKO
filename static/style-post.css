@@ -118,3 +118,9 @@
 #allPosts {
     animation: colorChange 1s infinite; /* Infinite color-changing animation */
 }
+
+.yourpost
+{
+    margin-top: 7%;
+    margin-left: 110%;
+}

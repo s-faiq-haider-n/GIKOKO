@@ -208,10 +208,10 @@ def authenticate():
                 return redirect(url_for('Homepage'))
             else:
                 # Password does not match
-                return "Incorrect password. Please try again."
+                return render_template('incorrect_passcode.html')
         else:
             # User does not exist
-            return "User does not exist. Please register."
+            return render_template('user_notFound.html')
 
     # If GET request or form submission fails, render login page
     return render_template('login.html')
@@ -392,6 +392,55 @@ def fetch_lPosts():
     category = 'Lost_n_Found'
     posts = get_catPosts(category)
     return render_template("posts_fetched.html", posts=posts, )
+
+
+@app.route("/fetch_userPosts")
+def fetch_userPosts():
+    logged_userID = session["user_id"]
+    logged_userID = str(logged_userID)
+    query = """SELECT posts.*, users.user_name
+            FROM posts
+            JOIN users ON posts.user_id = users.user_id
+            WHERE posts.user_id = """
+    query = query+logged_userID+" ORDER BY posts.post_time DESC;"
+    posts = get_Posts(query)
+    return render_template("user_posts_fetched.html", posts=posts, )
+
+
+@app.route("/edit_post", methods=['POST'])
+def edit_post():
+    post_id = request.form['post_id']
+    new_title = request.form['edit_title']
+    new_content = request.form['edit_content']
+    conn = get_db_connection()
+    cur = conn.cursor()
+    # Execute query
+    cur.execute(
+        "UPDATE posts SET title=%s , post_content=%s WHERE post_id=%s", (
+            new_title, new_content, post_id)
+    )
+    conn.commit()
+    # Close the cursor and connection
+    cur.close()
+    conn.close()
+    return redirect(url_for('fetch_userPosts'))
+
+
+@app.route("/delete_post", methods=['POST'])
+def delete_post():
+    post_id = request.form['post_id']
+    conn = get_db_connection()
+    cur = conn.cursor()
+    # Execute query
+    cur.execute(
+        "DELETE FROM posts WHERE post_id = %s", (
+            post_id,)
+    )
+    conn.commit()
+    # Close the cursor and connection
+    cur.close()
+    conn.close()
+    return redirect(url_for('fetch_userPosts'))
 
 
 @app.route("/dm")

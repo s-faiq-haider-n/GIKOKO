@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Incorrect Passcode</title>
+</head>
+
+<body>
+    <h1>User does not exist. Please register!</h1>
+    <p id="redirectMessage">Redirecting to login page in <span id="countdown">5</span> seconds...</p>
+
+    <!-- JavaScript for countdown and redirect -->
+    <script>
+        // Function to update countdown and redirect after specified time
+        function redirectWithCountdown() {
+            var countdownElement = document.getElementById('countdown');
+            var countdownValue = parseInt(countdownElement.innerText);
+
+            if (countdownValue > 0) {
+                countdownElement.innerText = countdownValue - 1;
+                setTimeout(redirectWithCountdown, 1000); // Call itself after 1 second (1000 milliseconds)
+            } else {
+                // Redirect to homepage after countdown ends
+                window.location.href = "{{ url_for('login') }}";
+            }
+        }
+
+        // Initial call to start countdown
+        setTimeout(redirectWithCountdown, 1000); // Start countdown after 1 second (1000 milliseconds)
+    </script>
+</body>
+
+</html>

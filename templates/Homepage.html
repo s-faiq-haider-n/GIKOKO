@@ -159,7 +159,7 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="dobInput" class="form-label">Date of Birth:</label>
+                            <label for="dobInput" class="form-label">Date of Birth (YYYY-MM-DD):</label>
                             <input type="text" class="form-control" id="dobInput" name="dobInput"
                                 value="{{ user_profile.date_of_birth }}" pattern="\d{4}-\d{2}-\d{2}"
                                 title="Please enter a date in the format YYYY-MM-DD (e.g., 2024-05-01)" required>
@@ -246,28 +246,7 @@
                 }
             }
         });
-        // $(document).ready(function () {
-        //     $('#uploadDPButton').on('click', function () {
-        //         var formData = new FormData($('#uploadDPForm')[0]); // Get the form data
 
-        //         $.ajax({
-        //             url: '/upload_dp', // Your server-side endpoint
-        //             type: 'POST',
-        //             data: formData,
-        //             processData: false, // Don't process files
-        //             contentType: false, // No content type (as we're sending form data)
-        //             success: function (response) {
-        //                 alert('Profile picture uploaded successfully!');
-        //                 $('#uploadDPModal').modal('hide'); // Close the modal
-        //                 // Optionally, update the UI with the new profile picture
-        //             },
-        //             error: function (jqXHR, textStatus, errorThrown) {
-        //                 console.error('Error uploading profile picture:', textStatus, errorThrown);
-        //                 alert('Error uploading profile picture. Please try again.');
-        //             },
-        //         });
-        //     });
-        // });
 
     </script>
 
