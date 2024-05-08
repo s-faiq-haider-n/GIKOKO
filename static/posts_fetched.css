@@ -126,3 +126,8 @@
     color: #444;
     font-size: 18px;
 }
+
+/* Define a CSS rule to target h4 elements with a specific class */
+h4.custom-heading {
+    color: #5e9dfc;
+}
