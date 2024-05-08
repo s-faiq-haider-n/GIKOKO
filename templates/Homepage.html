@@ -48,7 +48,9 @@
 
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <li><a id="display-picture" class="dropdown-item" href="#">Upload Dp</a></li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                    data-bs-target="#uploadDPModal">Upload DP</a></li>
+                            <!-- <li><a id="display-picture" class="dropdown-item" href="#">Upload Dp</a></li> -->
                             <li><a class="dropdown-item" href="#" onclick="showEditModal()">Edit Profile</a></li>
                             <li><a id="logout-link" class="dropdown-item" href="#">Logout</a></li>
                         </ul>
@@ -57,6 +59,32 @@
             </div>
         </div>
     </nav>
+
+    <!-- Modal for Upload DP -->
+    <div class="modal fade" id="uploadDPModal" tabindex="-1" aria-labelledby="uploadDPModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadDPModalLabel">Upload Display Picture</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- File upload form -->
+                    <form id="uploadDPForm" enctype="multipart/form-data" method="post" action="/uploadDp">
+                        <div class="mb-3">
+                            <label for="profilePicture" class="form-label">Choose an image:</label>
+                            <input type="file" name="profilePicture" id="profilePicture" class="form-control"
+                                accept="image/*" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="uploadDPButton">Upload</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- User Profile Section -->
     <section class="profile-section mt-5">
@@ -69,6 +97,8 @@
                     <p><strong>Bio:</strong> {{ user_profile.bio }}</p>
                     <p><strong>Username:</strong> {{ user_profile.username }}</p>
                     <p><strong>Email:</strong> {{ user_profile.email }}</p>
+                    <p><strong>Phone No:</strong> {{ user_profile.phNumber }}</p>
+                    <p><strong>Gender:</strong> {{ user_profile.gender }}</p>
                     <p><strong>Date of Birth:</strong> {{ user_profile.date_of_birth }}</p>
                     <p><strong>House Address:</strong> {{ user_profile.house_address }}</p>
                     <p><strong>Date Joined:</strong> {{ user_profile.date_joined }}</p>
@@ -112,6 +142,21 @@
                             <label for="emailInput" class="form-label">Email:</label>
                             <input type="email" class="form-control" id="emailInput" name="emailInput"
                                 value="{{ user_profile.email }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="phInput" class="form-label">Phone Number:</label>
+                            <input type="text" class="form-control" id="phInput" name="phoneNumberInput"
+                                value="{{ user_profile.phNumber }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="gender" class="form-label">Category:</label>
+                            <select id="gender" name="genderInput" class="form-select">
+                                <option value="Other">Other</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <!-- <option value="Non-Binary">Non-Binary</option> -->
+                                <option value="Other">Other</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="dobInput" class="form-label">Date of Birth:</label>
@@ -183,6 +228,47 @@
                 xhr.send(JSON.stringify({}));  // Send an empty JSON object
             });
         });
+        document.addEventListener('DOMContentLoaded', function () {
+            // Retrieve the user's gender from the user_profile data
+            var userGender = "{{ user_profile.gender }}";
+
+            // Get the <select> element
+            var genderSelect = document.getElementById('gender');
+
+            // Loop through each <option> element inside the <select>
+            for (var i = 0; i < genderSelect.options.length; i++) {
+                var option = genderSelect.options[i];
+
+                // Check if the option value matches the user's gender
+                if (option.value === userGender) {
+                    // Set this option as selected
+                    option.selected = true;
+                }
+            }
+        });
+        $(document).ready(function () {
+            $('#uploadDPButton').on('click', function () {
+                var formData = new FormData($('#uploadDPForm')[0]); // Get the form data
+
+                $.ajax({
+                    url: '/upload_dp', // Your server-side endpoint
+                    type: 'POST',
+                    data: formData,
+                    processData: false, // Don't process files
+                    contentType: false, // No content type (as we're sending form data)
+                    success: function (response) {
+                        alert('Profile picture uploaded successfully!');
+                        $('#uploadDPModal').modal('hide'); // Close the modal
+                        // Optionally, update the UI with the new profile picture
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.error('Error uploading profile picture:', textStatus, errorThrown);
+                        alert('Error uploading profile picture. Please try again.');
+                    },
+                });
+            });
+        });
+
     </script>
 
 </body>

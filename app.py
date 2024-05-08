@@ -3,6 +3,7 @@ import psycopg2
 import argon2
 import secrets
 import binascii
+import os
 from datetime import datetime
 
 
@@ -226,7 +227,7 @@ def Homepage():
 
         # Execute query
         cur.execute(
-            "SELECT first_name,last_name,bio,email,date_of_birth,address,date_joined,dp_path FROM users WHERE user_name = %s", (
+            "SELECT first_name,last_name,bio,email,date_of_birth,address,date_joined,dp_path,phone_no,gender FROM users WHERE user_name = %s", (
                 logged_user,)
         )
         conn.commit()
@@ -236,7 +237,8 @@ def Homepage():
         conn.close()
         user_profile = {'first_name': logged_user_record[0], 'last_name': logged_user_record[1], 'bio': logged_user_record[2],
                         'username': logged_user, 'email': logged_user_record[3], 'date_of_birth': logged_user_record[4],
-                        'house_address': logged_user_record[5], 'date_joined': logged_user_record[6], 'dp': logged_user_record[7]}
+                        'house_address': logged_user_record[5], 'date_joined': logged_user_record[6], 'dp': logged_user_record[7],
+                        'phNumber': logged_user_record[8], 'gender': logged_user_record[9]}
         return render_template("Homepage.html", user_profile=user_profile)
     # If 'username' isn't in the session, redirect to the login page
     else:
@@ -254,7 +256,7 @@ def update_profile():
                         'bio': request.form['bioInput'],
                         'username': request.form['usernameInput'], 'email': request.form['emailInput'],
                         'date_of_birth': request.form['dobInput'],
-                        'house_address': request.form['addressInput']}
+                        'house_address': request.form['addressInput'], 'phNumber': request.form['phoneNumberInput'], 'gender': request.form['genderInput']}
         date_format = "%Y-%m-%d"
         date_object = datetime.strptime(
             user_profile['date_of_birth'], date_format)
@@ -262,10 +264,10 @@ def update_profile():
         # Execute query
         cur.execute("""UPDATE users SET first_name= %s,
                 last_name= %s, bio= %s, user_name= %s, email= %s, date_of_birth= %s,
-                address= %s WHERE user_name = %s""",
+                address= %s,  phone_no= %s ,gender= %s WHERE user_name = %s""",
                     (user_profile['first_name'], user_profile['last_name'],
                      user_profile['bio'], user_profile['username'], user_profile['email'], date_object,
-                     user_profile['house_address'], logged_user))
+                     user_profile['house_address'], user_profile['phNumber'], user_profile['gender'], logged_user))
 
         conn.commit()
         # Close the cursor and connection

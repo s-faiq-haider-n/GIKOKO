@@ -46,9 +46,8 @@
     <section class="search-section mt-4">
         <div class="container">
             <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Enter user's name" aria-label="Search"
-                    aria-describedby="button-search">
-                <button class="btn btn-primary" type="button" id="button-search">Search</button>
+                <input type="text" class="form-control" id="search-bar" placeholder="Enter user's name"
+                    aria-label="Search" aria-describedby="button-search">
             </div>
         </div>
     </section>
@@ -159,6 +158,34 @@
                     let userId = button.getAttribute('data-userid');
                     document.getElementById('userIdField').value = userId; // Set user_id in a hidden field
                 });
+            });
+        });
+        $(document).ready(function () {
+            // Add event listener for the search bar
+            $('#search-bar').on('input', function () {
+                const query = $(this).val().toLowerCase();
+                $('.card.mb-3').each(function () { // Target the card container
+                    const userName = $(this).find('.card-title').text().toLowerCase();
+                    $(this).toggle(userName.includes(query));
+                });
+            });
+
+            // Clear search results when search bar is empty
+            $('#search-bar').on('keyup', function () {
+                if ($(this).val().trim() === '') {
+                    $('.card.mb-3').show(); // Show all cards if search bar is empty
+                }
+            });
+
+            // Handle dynamic modal for message button
+            $('.message-btn').on('click', function () {
+                const userId = $(this).data('userid');
+                $('#userIdField').val(userId); // Set user ID in hidden input
+            });
+
+            // Reset modal form on close
+            $('#messageModal').on('hidden.bs.modal', function () {
+                $('#messageForm')[0].reset(); // Reset form fields
             });
         });
 
