@@ -278,6 +278,37 @@ def update_profile():
         return "Unable to update Profile"
 
 
+@app.route("/uploadDp", methods=['POST', 'GET'])
+def uploadDp():
+    logged_user = session["username"]
+    if 'profilePicture' not in request.files:
+        return "No file part"
+
+    file = request.files['profilePicture']
+
+    if file.filename == '':
+        return "No selected file"
+
+    # Save the file to the server
+    upload_folder = os.path.join(app.root_path, 'static')
+    if not os.path.exists(upload_folder):
+        os.makedirs(upload_folder)
+
+    file_path = os.path.join(upload_folder, file.filename)
+    file.save(file_path)
+    # Extract filename from file_path
+    filename = os.path.basename(file_path)
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("UPDATE users SET dp_path = %s WHERE user_name = %s",
+                (filename, logged_user))
+    conn.commit()
+    cur.close()
+
+    return render_template('redirect_landing.html')
+
+
 @app.route("/post_page")
 def post_page():
     return render_template('post.html')
