@@ -125,6 +125,11 @@ def create_acc():
     return render_template("login.html")
 
 
+@ app.route("/about")
+def about():
+    return render_template('about_us.html')
+
+
 @ app.route("/create")
 def create():
     return render_template("create_acc.html")

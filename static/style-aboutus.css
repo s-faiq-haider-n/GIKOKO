@@ -1,0 +1,102 @@
+/* Global Styles */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Logo Container Styling */
+.logo-container {
+    font-size: 1.5rem;
+}
+
+/* Page Container */
+.container {
+    padding: 20px;
+    padding-top: 40px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+hr {
+    border-top: 1px solid #ddd;
+    margin: 1.5rem 0;
+}
+
+/* Headings */
+h2 {
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 30px;
+}
+
+h3 {
+    color: #555;
+    font-size: 1.5rem;
+}
+
+/* Card Styling */
+.card {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+    margin-bottom: 20px;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.dp-image {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin: 0 auto;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-weight: bold;
+    color: #333;
+}
+
+.card-text {
+    color: #777;
+}
+
+/* Footer Styling */
+footer {
+    background-color: #f1f1f1;
+    padding: 20px;
+    border-top: 1px solid #ddd;
+}
+
+footer p {
+    margin: 0;
+    color: #555;
+}
+
+/* Spacing and Padding for Layout */
+.mt-5 {
+    margin-top: 3rem;
+}
+
+.my-4 {
+    margin: 1.5rem 0;
+}
+
+.mb-5 {
+    margin-bottom: 3rem;
+}
+
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 20px;
+    }
+}
