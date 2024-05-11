@@ -484,24 +484,42 @@ def dm():
     return render_template('message.html', chat_records=chat_records, logged_userID=logged_userID)
 
 
-# @app.route('/chat/<int:chat_id>')
-# def get_messages():
+@app.route('/chat/<int:chat_id>')
+def get_messages(chat_id):
+    print("dynamic chat route chat with: ", chat_id)
+    logged_userID = session["user_id"]
 
-
-@app.route('/send_message', methods=['POST'])
-def send_message():
-    receiver_id = request.form.get('user_id')
-    message = request.form.get('message')
     con = get_db_connection()
     cur = con.cursor()
-    # Execute query
-    cur.execute("""INSERT INTO messages(sender_id,receiver_id,msg_content)
-                VALUES (%s,%s,%s)""",
-                (session["user_id"], receiver_id, message))
-    con.commit()
+
+    # Retrieve messages for the selected chat
+    cur.execute(
+        """SELECT message_id, sender_id, receiver_id, msg_content, msg_time
+           FROM messages
+           WHERE (sender_id = %s AND receiver_id = %s)
+           OR (sender_id = %s AND receiver_id = %s)
+           ORDER BY msg_time DESC;""",
+        (logged_userID, chat_id, chat_id, logged_userID)
+    )
+
+    messages = cur.fetchall()
+    cur.close()
     con.close()
 
-    return redirect(url_for("dm"))
+    # Prepare messages data to be sent as JSON
+    formatted_messages = [
+        {
+            'message_id': message[0],
+            'sender_id': message[1],
+            'receiver_id': message[2],
+            'message': message[3],
+            # Format timestamp
+            'timestamp': message[4].strftime("%Y-%m-%d %H:%M:%S")
+        }
+        for message in messages
+    ]
+    print(formatted_messages)
+    return jsonify(formatted_messages)
 
 
 @ app.route("/userSearch")
@@ -533,11 +551,29 @@ def userSearch():
     return render_template('user_search.html', users=users, current_userID=current_userID)
 
 
+# Send message from user search option (not dynamic)
+
+
+@app.route('/send_message', methods=['POST'])
+def send_message():
+    receiver_id = request.form.get('user_id')
+    message = request.form.get('message')
+    con = get_db_connection()
+    cur = con.cursor()
+    # Execute query
+    cur.execute("""INSERT INTO messages(sender_id,receiver_id,msg_content)
+                VALUES (%s,%s,%s)""",
+                (session["user_id"], receiver_id, message))
+    con.commit()
+    con.close()
+
+    return redirect(url_for("dm"))
+
+
 @ app.route("/logout", methods=['POST'])
 def logout():
     session.clear()
-    # return redirect(url_for('login'))
-    return render_template('login.html')
+    return redirect(url_for('login'))
 
 
 if __name__ == '__main__':
