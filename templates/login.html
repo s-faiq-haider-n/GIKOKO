@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GIKOKO - Sign In</title>
-    <link rel="icon" type="image/png" href="logo.jpg">
+    <link rel="icon" type="image/png" href="logo.png">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
@@ -16,7 +16,7 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="text-center mb-4">
-                    <img src="{{ url_for('static', filename='logo.jpg') }}" alt="Logo" width="80" height="80">
+                    <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" width="80" height="80">
                     <p class="brand">Ghulam Ishaq Khan Online Kinship Oasis</p>
                 </div>
                 <form id="signInForm" action="/authenticate" method="POST">

@@ -62,10 +62,15 @@ def verify_password(hashed_password, hex_salt, en_password):
 def check_db_connection():
     try:
         conn = psycopg2.connect(
-            dbname="gikoko",
-            user="postgres",
-            password="dbprj",
-            host="127.0.0.1"
+            # dbname="gikoko",
+            # user="postgres",
+            # password="dbprj",
+            # host="127.0.0.1"
+
+            dbname="gikoko_db",
+            user="gikoko_db_owner",
+            password="tm87jivoFhfk",
+            host="ep-dawn-lab-a1g102zu.ap-southeast-1.aws.neon.tech"
         )
         conn.close()
         return True
@@ -79,10 +84,14 @@ def check_db_connection():
 
 def get_db_connection():
     conn = psycopg2.connect(
-        dbname="gikoko",
-        user="postgres",
-        password="dbprj",
-        host="127.0.0.1"
+        # dbname="gikoko",
+        # user="postgres",
+        # password="dbprj",
+        # host="127.0.0.1"
+        dbname="gikoko_db",
+        user="gikoko_db_owner",
+        password="tm87jivoFhfk",
+        host="ep-dawn-lab-a1g102zu.ap-southeast-1.aws.neon.tech"
     )
     if check_db_connection:
         return conn
@@ -150,12 +159,7 @@ def submit_account():
         h_password, h_passsalt = hash_password(password)
 
         # Get the existing database connection
-        conn = psycopg2.connect(
-            dbname="gikoko",
-            user="postgres",
-            password="dbprj",
-            host="127.0.0.1"
-        )
+        conn = get_db_connection()
 
         # Create a cursor
         cur = conn.cursor()
@@ -171,11 +175,17 @@ def submit_account():
         cur.close()
         conn.close()
         print('insertion complete')
-        return redirect("/login")  # Redirect to the login page
-    except psycopg2.Error as e:
-        # If there's an error during database operation, print the error and return an error message
+        return "Account created successfully"
+
+    except psycopg2.IntegrityError as e:
+        # If there's a unique constraint violation (duplicate key error)
         print("Error:", e)
-        return "An error occurred while inserting data into the database"
+        return "Username or email already exists"
+
+    except Exception as e:
+        # If there's any other error during database operation
+        print("Error:", e)
+        return "Failed to create account. Please try again."
 
 
 @ app.route("/login")
@@ -486,6 +496,7 @@ def dm():
 
 @app.route('/chat/<int:chat_id>')
 def get_messages(chat_id):
+    logged_userID = session["user_id"]
     print("dynamic chat route chat with: ", chat_id)
     logged_userID = session["user_id"]
 
@@ -519,7 +530,28 @@ def get_messages(chat_id):
         for message in messages
     ]
     print(formatted_messages)
-    return jsonify(formatted_messages)
+    return jsonify(messages=formatted_messages, logged_userID=logged_userID)
+
+
+@app.route('/send_message/<int:receiver_id>', methods=['POST'])
+def send_message(receiver_id):
+    print("dynamic chat 2 route chat with: ", receiver_id)
+
+    message_content = request.form['message']
+    logged_userID = session["user_id"]
+
+    con = get_db_connection()
+    cur = con.cursor()
+    cur.execute(
+        """INSERT INTO messages(sender_id, receiver_id, msg_content, msg_time)
+           VALUES (%s, %s, %s, NOW())""",
+        (logged_userID, receiver_id, message_content)
+    )
+    con.commit()
+    cur.close()
+    con.close()
+
+    return jsonify({'status': 'success'})
 
 
 @ app.route("/userSearch")
@@ -555,7 +587,7 @@ def userSearch():
 
 
 @app.route('/send_message', methods=['POST'])
-def send_message():
+def send_message_u():
     receiver_id = request.form.get('user_id')
     message = request.form.get('message')
     con = get_db_connection()

@@ -53,7 +53,7 @@
                         <!-- Placeholder image or default avatar if dp_path is NULL -->
                         <img src="{{ url_for('static', filename='default.jpg') }}" class="rounded-circle">
                         {% endif %}
-                        <h8 id="chat_Name">&#160&#160&#160{{ record[1]}} {{record[2]}}</h3>
+                        <h8 id="chat_Name">{{ record[1]}} {{record[2]}}</h8>
                     </li>
                     {% endfor %}
                     {% else %}
@@ -67,7 +67,7 @@
                         <h4>Select a chat to view messages.</h4>
                     </div>
                     <div class="chat-content" id="chat-content">
-                        <!-- Messages will be displayed here based on selected chat -->
+                        <!-- Messages will be displayed here based on selected chat/ update here -->
                     </div>
                     <div class="chat-input" id="chat-input-container">
                         <input type="text" class="form-control" id="chat-input" placeholder="Type your message here...">
@@ -89,13 +89,15 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script>
+    <script type="text/javascript">
+        var logged_userID = JSON.parse('{{ logged_userID | tojson | safe }}');
         $(document).ready(function () {
             $('#chat-input-container').hide();
 
             // Use event delegation if elements are dynamically loaded/updated
             $(document).on('click', '.chat-list-item', function () {
                 const selectedChat = $(this).data('chat');  // Get the selected chat ID
+
 
                 // Update chat header
                 $('#chat-header').html(`<h4>Chat with User ${selectedChat}</h4>`);
@@ -111,9 +113,9 @@
                     url: `/chat/${selectedChat}`,
                     method: 'GET',
                     success: function (data) {
-                        if (data && Array.isArray(data)) {
+                        if (data.messages && Array.isArray(data.messages)) {
                             // Iterate over each message in the data array
-                            data.forEach(item => {
+                            data.messages.forEach(item => {
                                 const messageStyle = item.sender_id === logged_userID ? 'message-right' : 'message-left';
 
                                 // Construct HTML for each message
@@ -154,29 +156,37 @@
             // Handle sending messages (simulate sending)
             $('#send-btn').click(function () {
                 const messageInput = $('#chat-input').val();
+                const receiverId = $('.chat-header').data('chat-id', selectedChat); // Store receiver ID in chat header element when chat is selected
+
                 if (messageInput.trim() === '') {
                     return; // Do not send empty messages
                 }
 
-                // Construct HTML for the sent message
-                const sentMessageHTML = `
-            <div class="message message-right">
-                <strong>You:</strong>
-                ${messageInput}
-                <br>
-                <small>Now</small>
-            </div>
-        `;
-
-                // Append the sent message HTML to the chat content
-                $('#chat-content').append(sentMessageHTML);
-
-                // Scroll to the bottom of the chat content
-                $('#chat-content').scrollTop($('#chat-content')[0].scrollHeight);
-
-                // Clear the message input field
-                $('#chat-input').val('');
+                $.ajax({
+                    url: `/send_message/${receiverId}`,
+                    method: 'POST',
+                    data: { message: messageInput },
+                    success: function (response) {
+                        if (response.status === 'success') {
+                            const sentMessageHTML = `
+                    <div class="message message-right">
+                        <strong>You:</strong>
+                        ${messageInput}
+                        <br>
+                        <small>Now</small>
+                    </div>
+                `;
+                            $('#chat-content').append(sentMessageHTML);
+                            $('#chat-content').scrollTop($('#chat-content')[0].scrollHeight);
+                            $('#chat-input').val('');
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Error sending message:', error);
+                    }
+                });
             });
+
         });
 
     </script>

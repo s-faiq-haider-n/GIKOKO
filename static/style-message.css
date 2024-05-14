@@ -1,19 +1,28 @@
-.logo{
-    width: 60px; /* Set the desired width */
-    height: 60px; /* Set the same height to make it a perfect circle */
-    object-fit: cover; /* Ensure the image covers the entire container */
-    border-radius: 50%; /* Make the image round */
-  }
+.logo {
+    width: 60px;
+    /* Set the desired width */
+    height: 60px;
+    /* Set the same height to make it a perfect circle */
+    object-fit: cover;
+    /* Ensure the image covers the entire container */
+    border-radius: 50%;
+    /* Make the image round */
+}
 
-.list-group-item chat-list-item:hover {
+.list-group-item.chat-list-item:hover {
     cursor: pointer;
 }
-.rounded-circle{
-    width: 40px; /* Set the desired width */
-    height: 40px; /* Set the same height to make it a perfect circle */
-    object-fit: cover; /* Ensure the image covers the entire container */
-    border-radius: 50%; /* Make the image round */
-  }
+
+.rounded-circle {
+    width: 40px;
+    /* Set the desired width */
+    height: 40px;
+    /* Set the same height to make it a perfect circle */
+    object-fit: cover;
+    /* Ensure the image covers the entire container */
+    border-radius: 50%;
+    /* Make the image round */
+}
 
 .navbar-nav {
     display: flex;
@@ -39,7 +48,8 @@
     border: 1px solid #ccc;
     padding: 10px;
     background-color: #f9f9f9;
-    height: 300px;
+    height: 400px;
+    /* Increased height for better viewing */
     overflow-y: auto;
 }
 
@@ -50,6 +60,10 @@
 
 .chat-content {
     padding: 10px;
+    flex-grow: 1;
+    /* Allow content to grow */
+    overflow-y: auto;
+    /* Scrollable content */
 }
 
 .chat-input {
@@ -63,12 +77,9 @@
     color: white;
     text-align: center;
     padding: 10px;
-    margin-top: 11%;
+    margin-top: 2%;
 }
 
-.footer p {
-    margin: 0;
-}
 
 .chat-list-item {
     display: flex;
@@ -83,29 +94,35 @@
 }
 
 .message {
-    display: block;
-    /* Each message will be on a new line */
     padding: 5px;
     margin-bottom: 5px;
     border-radius: 10px;
-    overflow: auto;
-    /* Add space between messages */
+    max-width: 60%;
+    word-wrap: break-word;
+    /* Ensure words wrap correctly */
 }
 
 .message-left {
     text-align: left;
     background-color: #f0f0f0;
-
-    /* Light green background for left messages */
+    /* Light grey background for received messages */
 }
 
 .message-right {
     text-align: right;
     background-color: #d8f3dc;
-    /* Light grey background for right messages */
+    /* Light green background for sent messages */
+    margin-left: auto;
+    /* Align right messages to the right */
 }
 
 #chat-input-container {
+    display: flex;
+    flex-direction: row;
+    /* Align input and button horizontally */
     padding: 10px;
-    display: none;
+    border-top: 1px solid #ccc;
+    align-items: center;
+    gap: 10px;
+    /* Space between input and button */
 }

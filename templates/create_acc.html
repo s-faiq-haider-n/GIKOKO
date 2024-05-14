@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GIKOKO - Create Account</title>
-    <link rel="icon" type="image/png" href="logo.jpg">
+    <link rel="icon" type="image/png" href="logo.png">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 
@@ -18,7 +18,7 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="text-center mb-4">
-                    <img src="{{ url_for('static', filename='logo.jpg') }}" alt="Logo" width="80" height="80">
+                    <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" width="80" height="80">
                     <p class="brand">Ghulam Ishaq Khan Online Kinship Oasis</p>
                 </div>
                 <form id="createAccountForm" action="/submit_account" method="POST">
@@ -71,30 +71,31 @@
                     alert("Passwords do not match");
                     return;
                 }
-
                 // Send AJAX request to Flask route for account creation
                 $.ajax({
-                    type: "POST",  // HTTP method
-                    url: "/submit_account",  // Flask route
+                    type: "POST",
+                    url: "/submit_account",
                     data: {
                         username: username,
                         email: email,
-                        password: password
+                        password: password,
+                        confirmPassword: confirmPassword
                     },
                     success: function (response) {
-                        alert("Account created successfully");  // Display success message
-                        // Optionally redirect to another page after successful account creation
-                        window.location.href = "/login";  // Redirect to login page
+                        if (response === "Account created successfully") {
+                            alert("Account created successfully");
+                            // Optionally redirect to login page
+                            window.location.href = "/login";
+                        } else {
+                            alert(response);  // Display error message from server
+                        }
                     },
                     error: function (error) {
                         console.error("Error creating account:", error);
-                        alert("Failed to create account. Please try again.");  // Display error message
+                        alert("Failed to create account. Please try again.");
                     }
                 });
 
-                // Additional code here if needed (e.g., hiding/showing elements)
-                $("#createAccountForm").hide(); // Hides the create account form
-                $("#signInForm").show(); // Shows the sign-in form
             });
         });
 
